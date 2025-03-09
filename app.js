@@ -11,7 +11,6 @@
         document.body.classList.toggle("light-mode");
     })
 
-
     // Create chatbot container
     document.addEventListener("DOMContentLoaded", function () {
         const chatbotContainer = document.createElement("div");
@@ -21,10 +20,18 @@
             <div id="chatbot-window" class="hidden">
                 <div id="chatbot-header">Chatbot <span onclick="toggleChatbot()">✖</span></div>
                 <div id="chatbot-messages"></div>
-                <input type="text" id="chatbot-input" placeholder="Ask me something..." onkeypress="handleChat(event)">
+                <input type="text" id="chatbot-input" placeholder="Ask me something...">
+                <button id="chatbot-send">Send</button>
             </div>
         `;
         document.body.appendChild(chatbotContainer);
+
+        document.getElementById("chatbot-send").addEventListener("click", sendMessage);
+        document.getElementById("chatbot-input").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
     });
 
     // Toggle chatbot visibility
@@ -33,14 +40,14 @@
     }
 
     // Handle chat input
-    function handleChat(event) {
-        if (event.key === "Enter") {
-            const inputField = document.getElementById("chatbot-input");
-            const userMessage = inputField.value;
-            inputField.value = "";
-            displayMessage("You: " + userMessage, "user");
-            generateResponse(userMessage);
-        }
+    function sendMessage() {
+        const inputField = document.getElementById("chatbot-input");
+        const userMessage = inputField.value.trim();
+        if (userMessage === "") return;
+
+        inputField.value = "";
+        displayMessage("You: " + userMessage, "user");
+        generateResponse(userMessage);
     }
 
     // Display message in chatbot window
@@ -49,6 +56,7 @@
         messageContainer.classList.add(sender);
         messageContainer.textContent = message;
         document.getElementById("chatbot-messages").appendChild(messageContainer);
+        document.getElementById("chatbot-messages").scrollTop = document.getElementById("chatbot-messages").scrollHeight;
     }
 
     // Generate responses based on FAQs
@@ -65,8 +73,9 @@
                 response = faq[key];
             }
         });
-
+        
         setTimeout(() => displayMessage("Chatbot: " + response, "bot"), 500);
     }
-    
+
+
 })();

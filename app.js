@@ -10,7 +10,7 @@
     document.querySelector(".theme-btn").addEventListener("click", () => {
         document.body.classList.toggle("light-mode");
     })
-    
+
     document.addEventListener("DOMContentLoaded", function() {
         const chatbotMessages = document.getElementById("chatbot-messages");
         const chatbotInput = document.getElementById("chatbot-input");
@@ -44,5 +44,9 @@
                 }, 1000);
             }
         });
-    });    
+    });  
+    document.getElementById("chatbot").addEventListener("click", function() {
+        this.classList.toggle("expanded");
+    });
+      
 })();

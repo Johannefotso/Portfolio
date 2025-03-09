@@ -35,12 +35,19 @@
 
         // Ensure chatbot stays hidden initially
         document.getElementById("chatbot-window").classList.add("hidden");
+        document.getElementById("chatbot-window").style.display = "none";
     });
 
     // Toggle chatbot visibility
     function toggleChatbot() {
         const chatbotWindow = document.getElementById("chatbot-window");
-        chatbotWindow.classList.toggle("hidden");
+        if (chatbotWindow.classList.contains("hidden")) {
+            chatbotWindow.classList.remove("hidden");
+            chatbotWindow.style.display = "block";
+        } else {
+            chatbotWindow.classList.add("hidden");
+            chatbotWindow.style.display = "none";
+        }
     }
 
     // Handle chat input

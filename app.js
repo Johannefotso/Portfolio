@@ -11,42 +11,50 @@
         document.body.classList.toggle("light-mode");
     })
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const chatbotMessages = document.getElementById("chatbot-messages");
-        const chatbotInput = document.getElementById("chatbot-input");
-        const chatbotSend = document.getElementById("chatbot-send");
+    document.addEventListener("DOMContentLoaded", function () {
+        const chatbotContainer = document.createElement("div");
+        chatbotContainer.innerHTML = `
+            <div id="chatbot">
+                <div id="chatbot-header">Chat with me!</div>
+                <div id="chatbot-messages"></div>
+                <input type="text" id="chatbot-input" placeholder="Ask me something..." />
+                <button id="chatbot-send">Send</button>
+            </div>
+        `;
+        document.body.appendChild(chatbotContainer);
     
-        function addMessage(text, sender) {
-            const message = document.createElement("div");
-            message.textContent = text;
-            message.style.padding = "10px";
-            message.style.margin = "5px";
-            message.style.borderRadius = "5px";
-            message.style.background = sender === "user" ? "#6c7983" : "#941bb5";
-            chatbotMessages.appendChild(message);
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-        }
+        const messagesContainer = document.getElementById("chatbot-messages");
+        const inputField = document.getElementById("chatbot-input");
+        const sendButton = document.getElementById("chatbot-send");
     
-        chatbotSend.addEventListener("click", function() {
-            const userMessage = chatbotInput.value.trim();
-            if (userMessage) {
-                addMessage(userMessage, "user");
-                chatbotInput.value = "";
+        const chatbotResponses = {
+            "hello": "Hi there! How can I help you?",
+            "what is your name": "I'm Johanne's portfolio chatbot!",
+            "what are your skills": "Johanne is skilled in HTML, CSS, JavaScript, React, Python, and Java.",
+            "tell me about your projects": "You can check out Johanne's projects on the portfolio section of this site!",
+            "how can I contact you": "You can reach Johanne via email at johannefotso1@gmail.com or LinkedIn."
+        };
     
+        sendButton.addEventListener("click", function () {
+            let userInput = inputField.value.toLowerCase().trim();
+            if (userInput) {
+                displayMessage(userInput, "user");
                 setTimeout(() => {
-                    let botReply = "I'm still learning! Try asking something else.";
-                    if (userMessage.toLowerCase().includes("hello")) {
-                        botReply = "Hi there! How can I help you today?";
-                    } else if (userMessage.toLowerCase().includes("portfolio")) {
-                        botReply = "Check out my portfolio section for my projects!";
-                    }
-                    addMessage(botReply, "bot");
-                }, 1000);
+                    let response = chatbotResponses[userInput] || "I'm not sure, but feel free to check out my portfolio!";
+                    displayMessage(response, "bot");
+                }, 500);
+                inputField.value = "";
             }
         });
-    });  
-    document.getElementById("chatbot").addEventListener("click", function() {
-        this.classList.toggle("expanded");
+    
+        function displayMessage(message, sender) {
+            let messageElement = document.createElement("div");
+            messageElement.classList.add("chatbot-message", sender);
+            messageElement.textContent = message;
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
     });
-      
+    
+
 })();

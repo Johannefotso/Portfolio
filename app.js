@@ -1,11 +1,11 @@
 (function () {
     [...document.querySelectorAll(".control")].forEach(button => {
-        button.addEventListener("click", function() {
+        button.addEventListener("click", function () {
             document.querySelector(".active-btn").classList.remove("active-btn");
             this.classList.add("active-btn");
             document.querySelector(".active").classList.remove("active");
             document.getElementById(button.dataset.id).classList.add("active");
-        })
+        });
     });
 
     document.querySelector(".theme-btn").addEventListener("click", () => {
@@ -31,12 +31,17 @@
         const chatbotIcon = document.getElementById("chatbot-icon");
         const chatbotClose = document.getElementById("chatbot-close");
 
+        // Ensure chatbot stays hidden initially
+        chatbotWindow.style.display = "none";
+
+        // Show chatbot when clicking the icon
         chatbotIcon.addEventListener("click", () => {
-            chatbotWindow.classList.toggle("hidden");
+            chatbotWindow.style.display = chatbotWindow.style.display === "none" ? "block" : "none";
         });
 
+        // Hide chatbot when clicking close button
         chatbotClose.addEventListener("click", () => {
-            chatbotWindow.classList.add("hidden");
+            chatbotWindow.style.display = "none";
         });
 
         document.getElementById("chatbot-send").addEventListener("click", sendMessage);
@@ -78,7 +83,7 @@
             "johanne": "Johanne Fotso is a tech enthusiast passionate about Web & Software development, Cybersecurity, and Innovation.",
             "education": "Johanne Fotso is currently a senior at Bowie State University, majoring in Computer Technology."
         };
-        
+
         const response = faq[userMessage] || "I'm not sure about that. Ask me about my skills, experience, education, or projects!";
         setTimeout(() => displayMessage("Chatbot: " + response, "bot"), 500);
     }

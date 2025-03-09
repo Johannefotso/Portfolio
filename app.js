@@ -36,6 +36,11 @@
         });
     });
 
+    // Ensure chatbot stays hidden initially
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("chatbot-window").classList.add("hidden");
+    });
+
     // Toggle chatbot visibility
     function toggleChatbot() {
         const chatbotWindow = document.getElementById("chatbot-window");
@@ -45,7 +50,7 @@
     // Handle chat input
     function sendMessage() {
         const inputField = document.getElementById("chatbot-input");
-        const userMessage = inputField.value.trim();
+        const userMessage = inputField.value.trim().toLowerCase();
         if (userMessage === "") return;
 
         inputField.value = "";
@@ -64,23 +69,18 @@
 
     // Generate responses based on FAQs
     function generateResponse(userMessage) {
-        let response = "I'm not sure about that. Ask me about my skills, experience, or projects!";
         const faq = {
             "hello": "Hello! How can I assist you today?",
-            "hi": "Hi there! Feel free to ask me about my portfolio.",
+            "hi": "Hi there! How can I help you?",
             "skills": "I am skilled in HTML, CSS, JavaScript, React, and Python.",
             "experience": "I am a Software Developer Intern at ForwardEdge AI and have worked on various web projects.",
             "projects": "I've worked on a chatbot, battleship game, and Amazon clone. Check my GitHub!",
             "johanne": "Johanne Fotso is a tech enthusiast passionate about Web & Software development, Cybersecurity, and Innovation."
         };
         
-        Object.keys(faq).forEach(key => {
-            if (userMessage.toLowerCase().includes(key)) {
-                response = faq[key];
-            }
-        });
-        
+        const response = faq[userMessage] || "I'm not sure about that. Ask me about my skills, experience, or projects!";
         setTimeout(() => displayMessage("Chatbot: " + response, "bot"), 500);
     }
+
 
 })();

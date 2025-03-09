@@ -7,18 +7,19 @@
             document.getElementById(button.dataset.id).classList.add("active");
         })
     });
+
     document.querySelector(".theme-btn").addEventListener("click", () => {
         document.body.classList.toggle("light-mode");
-    })
+    });
 
-    // Create chatbot container
+    // Ensure chatbot stays hidden initially
     document.addEventListener("DOMContentLoaded", function () {
         const chatbotContainer = document.createElement("div");
         chatbotContainer.id = "chatbot-container";
         chatbotContainer.innerHTML = `
-            <div id="chatbot-icon" onclick="toggleChatbot()">💬</div>
+            <div id="chatbot-icon">💬</div>
             <div id="chatbot-window" class="hidden">
-                <div id="chatbot-header">Chatbot <span id="chatbot-close" onclick="toggleChatbot()">✖</span></div>
+                <div id="chatbot-header">Chatbot <span id="chatbot-close">✖</span></div>
                 <div id="chatbot-messages"></div>
                 <input type="text" id="chatbot-input" placeholder="Ask me something...">
                 <button id="chatbot-send">Send</button>
@@ -26,29 +27,25 @@
         `;
         document.body.appendChild(chatbotContainer);
 
+        const chatbotWindow = document.getElementById("chatbot-window");
+        const chatbotIcon = document.getElementById("chatbot-icon");
+        const chatbotClose = document.getElementById("chatbot-close");
+
+        chatbotIcon.addEventListener("click", () => {
+            chatbotWindow.classList.toggle("hidden");
+        });
+
+        chatbotClose.addEventListener("click", () => {
+            chatbotWindow.classList.add("hidden");
+        });
+
         document.getElementById("chatbot-send").addEventListener("click", sendMessage);
         document.getElementById("chatbot-input").addEventListener("keypress", function (event) {
             if (event.key === "Enter") {
                 sendMessage();
             }
         });
-
-        // Ensure chatbot stays hidden initially
-        document.getElementById("chatbot-window").classList.add("hidden");
-        document.getElementById("chatbot-window").style.display = "none";
     });
-
-    // Toggle chatbot visibility
-    function toggleChatbot() {
-        const chatbotWindow = document.getElementById("chatbot-window");
-        if (chatbotWindow.classList.contains("hidden")) {
-            chatbotWindow.classList.remove("hidden");
-            chatbotWindow.style.display = "block";
-        } else {
-            chatbotWindow.classList.add("hidden");
-            chatbotWindow.style.display = "none";
-        }
-    }
 
     // Handle chat input
     function sendMessage() {
@@ -85,6 +82,4 @@
         const response = faq[userMessage] || "I'm not sure about that. Ask me about my skills, experience, education, or projects!";
         setTimeout(() => displayMessage("Chatbot: " + response, "bot"), 500);
     }
-
-
 })();

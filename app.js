@@ -11,50 +11,62 @@
         document.body.classList.toggle("light-mode");
     })
 
+
+    // Create chatbot container
     document.addEventListener("DOMContentLoaded", function () {
         const chatbotContainer = document.createElement("div");
+        chatbotContainer.id = "chatbot-container";
         chatbotContainer.innerHTML = `
-            <div id="chatbot">
-                <div id="chatbot-header">Chat with me!</div>
+            <div id="chatbot-icon" onclick="toggleChatbot()">💬</div>
+            <div id="chatbot-window" class="hidden">
+                <div id="chatbot-header">Chatbot <span onclick="toggleChatbot()">✖</span></div>
                 <div id="chatbot-messages"></div>
-                <input type="text" id="chatbot-input" placeholder="Ask me something..." />
-                <button id="chatbot-send">Send</button>
+                <input type="text" id="chatbot-input" placeholder="Ask me something..." onkeypress="handleChat(event)">
             </div>
         `;
         document.body.appendChild(chatbotContainer);
-    
-        const messagesContainer = document.getElementById("chatbot-messages");
-        const inputField = document.getElementById("chatbot-input");
-        const sendButton = document.getElementById("chatbot-send");
-    
-        const chatbotResponses = {
-            "hello": "Hi there! How can I help you?",
-            "what is your name": "I'm Johanne's portfolio chatbot!",
-            "what are your skills": "Johanne is skilled in HTML, CSS, JavaScript, React, Python, and Java.",
-            "tell me about your projects": "You can check out Johanne's projects on the portfolio section of this site!",
-            "how can I contact you": "You can reach Johanne via email at johannefotso1@gmail.com or LinkedIn."
+    });
+
+    // Toggle chatbot visibility
+    function toggleChatbot() {
+        document.getElementById("chatbot-window").classList.toggle("hidden");
+    }
+
+    // Handle chat input
+    function handleChat(event) {
+        if (event.key === "Enter") {
+            const inputField = document.getElementById("chatbot-input");
+            const userMessage = inputField.value;
+            inputField.value = "";
+            displayMessage("You: " + userMessage, "user");
+            generateResponse(userMessage);
+        }
+    }
+
+    // Display message in chatbot window
+    function displayMessage(message, sender) {
+        const messageContainer = document.createElement("div");
+        messageContainer.classList.add(sender);
+        messageContainer.textContent = message;
+        document.getElementById("chatbot-messages").appendChild(messageContainer);
+    }
+
+    // Generate responses based on FAQs
+    function generateResponse(userMessage) {
+        let response = "I'm not sure about that. Ask me about my skills, experience, or projects!";
+        const faq = {
+            "skills": "I am skilled in HTML, CSS, JavaScript, React, and Python.",
+            "experience": "I am a Software Developer Intern at ForwardEdge AI and have worked on various web projects.",
+            "projects": "I've worked on a chatbot, battleship game, and Amazon clone. Check my GitHub!"
         };
-    
-        sendButton.addEventListener("click", function () {
-            let userInput = inputField.value.toLowerCase().trim();
-            if (userInput) {
-                displayMessage(userInput, "user");
-                setTimeout(() => {
-                    let response = chatbotResponses[userInput] || "I'm not sure, but feel free to check out my portfolio!";
-                    displayMessage(response, "bot");
-                }, 500);
-                inputField.value = "";
+        
+        Object.keys(faq).forEach(key => {
+            if (userMessage.toLowerCase().includes(key)) {
+                response = faq[key];
             }
         });
-    
-        function displayMessage(message, sender) {
-            let messageElement = document.createElement("div");
-            messageElement.classList.add("chatbot-message", sender);
-            messageElement.textContent = message;
-            messagesContainer.appendChild(messageElement);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-    });
-    
 
+        setTimeout(() => displayMessage("Chatbot: " + response, "bot"), 500);
+    }
+    
 })();

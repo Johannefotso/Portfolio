@@ -77,7 +77,7 @@
         const faq = {
             "hello": "Hello! How can I assist you today?",
             "hi": "Hi there! How can I help you?",
-            "skills": "I am skilled in HTML, CSS, JavaScript, React, and Python.",
+            "skills": "I am skilled in HTML, CSS, JavaScript, React, Python, and Linux.",
             "experience": "I am a Software Developer Intern at ForwardEdge AI and have worked on various web projects.",
             "projects": "I've worked on a chatbot, battleship game, and Amazon clone. Check my GitHub!",
             "johanne": "Johanne Fotso is a tech enthusiast passionate about Web & Software development, Cybersecurity, and Innovation.",
